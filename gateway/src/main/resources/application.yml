@@ -1,0 +1,33 @@
+
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+      routes:
+        - id: jsonplaceholder
+          uri: https://jsonplaceholder.typicode.com/
+          predicates:
+            - Header=X-Token, (.*)
+            - Path=/users/*
+#            - Method=POST
+          filters:
+#            - RewritePath=/users/(?<segment>/?.*), /users/$\{segment}
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
